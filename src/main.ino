@@ -34,9 +34,9 @@ void loop() {
 		if(!beltActive) Serial.write('N');
 	}
 	if(beltActive) {
-		towardsDesk(2800);
+		towardsDesk(30000);
 		if (frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
-			towardsCupboard(2600);
+			towardsCupboard(30000);
 			beltActive = false;
 			Serial.print("D");
 		} else {
@@ -52,27 +52,27 @@ void run() {
 }
 
 void towardsCupboard(int dist) {
-        frontStepper.setMaxSpeed(100.0);
-        frontStepper.setAcceleration(40.0);
-        frontStepper.setSpeed(100);
+        frontStepper.setMaxSpeed(1000.0);
+        frontStepper.setAcceleration(500.0);
+        frontStepper.setSpeed(1000);
 
-        rearStepper.setMaxSpeed(80.0);
-        rearStepper.setAcceleration(40.0);
-        rearStepper.setSpeed(80);
+        rearStepper.setMaxSpeed(1000.0);
+        rearStepper.setAcceleration(500.0);
+        rearStepper.setSpeed(1000);
 
-        frontStepper.moveTo(-dist - 800);
-        rearStepper.moveTo(-dist);
+        frontStepper.moveTo(-dist - 3000);
+        rearStepper.moveTo(dist);
 }
 
 void towardsDesk(int dist) {
-        frontStepper.setMaxSpeed(100.0);
-        frontStepper.setAcceleration(40.0);
-        frontStepper.setSpeed(100);
+        frontStepper.setMaxSpeed(1000.0);
+        frontStepper.setAcceleration(500.0);
+        frontStepper.setSpeed(1000);
 
-        rearStepper.setMaxSpeed(150.0);
-        rearStepper.setAcceleration(50.0);
-        rearStepper.setSpeed(150);
+        rearStepper.setMaxSpeed(1000.0);
+        rearStepper.setAcceleration(500.0);
+        rearStepper.setSpeed(1000);
 
         frontStepper.moveTo(dist);
-        rearStepper.moveTo(dist + 1400);
+	rearStepper.moveTo(-dist - 3000);
 }
