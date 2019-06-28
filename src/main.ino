@@ -25,6 +25,7 @@ void setup() {
 }
 
 void loop() {
+	float distance = 600;
 	if(_test) run();
 	else {
 		if (Serial.available()) {
@@ -32,7 +33,7 @@ void loop() {
 			Serial.write(data);
 			if(data == 's' && !beltActive && frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
 				beltActive = true;
-				towardsDesk(250);
+				towardsDesk(distance);
 				run();
 
 				Serial.print("AA");
@@ -42,22 +43,36 @@ void loop() {
 		}
 		if(beltActive) {
 			if (frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
-				towardsCupboard(100);
+				towardsCupboard(distance - 100);
 				beltActive = false;
 				Serial.print("D");
 			} else {
 				Serial.print("M");
 			}
 		}
-		if(!beltActive && frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
-			lock();
-		}
 		run();
 	}
 }
 
 void test() {
-	lock();
+	towardsCupboard(300);
+	/*float speed = 75.0;
+	float acceleration = 75.0;
+
+        rearStepper.setMaxSpeed(speed);
+        rearStepper.setAcceleration(acceleration);
+        rearStepper.setSpeed(speed);
+
+        rearStepper.moveTo(1500);
+	//towardsDesk(900);
+
+	//lock();
+	frontStepper.setMaxSpeed(150.0);
+        frontStepper.setAcceleration(60.0);
+        frontStepper.setSpeed(150);
+
+        frontStepper.moveTo(1500);
+	*/
 }
 
 void run() {
@@ -69,37 +84,36 @@ void lock() {
         frontStepper.setAcceleration(60.0);
         frontStepper.setSpeed(150);
 
-        rearStepper.setMaxSpeed(100.0);
-        rearStepper.setAcceleration(40.0);
-        rearStepper.setSpeed(100);
-
-        frontStepper.moveTo(-1000);
-        rearStepper.moveTo(-1000);
-
-}
-
-void towardsCupboard(int dist) {
-        frontStepper.setMaxSpeed(150.0);
-        frontStepper.setAcceleration(60.0);
-        frontStepper.setSpeed(150);
-
-        rearStepper.setMaxSpeed(100.0);
-        rearStepper.setAcceleration(40.0);
-        rearStepper.setSpeed(100);
-
-        frontStepper.moveTo(-dist - 100);
-        rearStepper.moveTo(dist);
-}
-
-void towardsDesk(int dist) {
-        frontStepper.setMaxSpeed(100.0);
-        frontStepper.setAcceleration(40.0);
-        frontStepper.setSpeed(100);
-
         rearStepper.setMaxSpeed(150.0);
         rearStepper.setAcceleration(60.0);
         rearStepper.setSpeed(150);
 
-        frontStepper.moveTo(dist);
-        rearStepper.moveTo(-dist - 100);
+        rearStepper.moveTo(500);
+}
+float speed = 75.0;
+float acceleration = 75.0;
+void towardsCupboard(int dist) {
+        frontStepper.setMaxSpeed(speed);
+        frontStepper.setAcceleration(acceleration);
+        frontStepper.setSpeed(speed);
+
+        rearStepper.setMaxSpeed(speed);
+        rearStepper.setAcceleration(acceleration);
+        rearStepper.setSpeed(speed);
+
+        frontStepper.moveTo(dist + 100);
+        rearStepper.moveTo(-dist);
+}
+
+void towardsDesk(int dist) {
+        frontStepper.setMaxSpeed(speed);
+        frontStepper.setAcceleration(acceleration);
+        frontStepper.setSpeed(speed);
+
+        rearStepper.setMaxSpeed(speed);
+        rearStepper.setAcceleration(acceleration);
+        rearStepper.setSpeed(speed);
+
+        frontStepper.moveTo(-dist);
+        rearStepper.moveTo(2 * dist);
 }
