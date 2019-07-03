@@ -55,24 +55,17 @@ void loop() {
 }
 
 void test() {
-	towardsCupboard(300);
-	/*float speed = 75.0;
+	towardsDesk(1000);
+}
+
+void frontToCupboard() {
+	float speed = 75.0;
 	float acceleration = 75.0;
+        frontStepper.setMaxSpeed(speed);
+        frontStepper.setAcceleration(acceleration);
+        frontStepper.setSpeed(speed);
 
-        rearStepper.setMaxSpeed(speed);
-        rearStepper.setAcceleration(acceleration);
-        rearStepper.setSpeed(speed);
-
-        rearStepper.moveTo(1500);
-	//towardsDesk(900);
-
-	//lock();
-	frontStepper.setMaxSpeed(150.0);
-        frontStepper.setAcceleration(60.0);
-        frontStepper.setSpeed(150);
-
-        frontStepper.moveTo(1500);
-	*/
+        frontStepper.moveTo(1200);
 }
 
 void run() {
@@ -115,5 +108,5 @@ void towardsDesk(int dist) {
         rearStepper.setSpeed(speed);
 
         frontStepper.moveTo(-dist);
-        rearStepper.moveTo(2 * dist);
+        rearStepper.moveTo(dist + 99);
 }
