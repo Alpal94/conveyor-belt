@@ -27,7 +27,7 @@ void setup() {
 }
 
 void loop() {
-	float distance = 5600;
+	float distance = 5000;
 	if(_test) run();
 	else {
 		if (Serial.available()) {
@@ -36,7 +36,7 @@ void loop() {
 			if(data == 's' && !beltActive && frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
 				beltActive = true;
 				firstRun = true;
-				towardsDesk(distance);
+				towardsCupboard(distance);
 				run();
 
 				Serial.print("AA");
@@ -46,7 +46,7 @@ void loop() {
 		}
 		if(firstRun) {
 			if (rearStepper.distanceToGo() == 0) { //Only interested in the rear stepper reaching its target
-				towardsCupboard(1);
+				towardsDesk(1);
 				run();
 				firstRun = false;
 				finalRun = true;
@@ -103,8 +103,8 @@ void lock() {
 
 void towardsCupboard(int _dist) {
 	//Driver
-	float _fSpeed = 55.0;
-	float _fAccel = 55.0;
+	float _fSpeed = 80.0;
+	float _fAccel = 80.0;
 	//Back
 	float _rSpeed = 80.0;
 	float _rAccel = 80.0;
@@ -123,11 +123,11 @@ void towardsCupboard(int _dist) {
 
 void towardsDesk(int dist) {
 	//Back
-	float fSpeed = 50.0;
-	float fAccel = 50.0;
+	float fSpeed = 80.0;
+	float fAccel = 80.0;
 	//Driver
-	float rSpeed = 75.0;
-	float rAccel = 75.0;
+	float rSpeed = 80.0;
+	float rAccel = 80.0;
 
         frontStepper.setMaxSpeed(fSpeed);
         frontStepper.setAcceleration(fAccel);
@@ -146,10 +146,10 @@ void stop() {
         frontStepper.setAcceleration(0);
         frontStepper.setSpeed(0);
 
-        rearStepper.setMaxSpeed(50);
-        rearStepper.setAcceleration(50);
-        rearStepper.setSpeed(50);
+        rearStepper.setMaxSpeed(0);
+        rearStepper.setAcceleration(0);
+        rearStepper.setSpeed(0);
 
         frontStepper.moveTo(0);
-        rearStepper.moveTo(100);
+        rearStepper.moveTo(0);
 }
