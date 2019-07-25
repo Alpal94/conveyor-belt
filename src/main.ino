@@ -34,22 +34,22 @@ void setup() {
 
 void loop() {
 	float distance = 5000;
-	stop();
-	run();
 	
 	if(_test) run();
 	else {
 		if (Serial.available()) {
 			char data = Serial.read();
 			Serial.write(data);
-			if(data == 's' && !beltActive && frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
+			if(data == 's' && !beltActive) {
 				digitalWrite(relay12VPinMaster, on);
-				beltActive = true;
-				firstRun = true;
-				towardsCupboard(distance);
-				run();
+				if(frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
+					beltActive = true;
+					firstRun = true;
+					towardsCupboard(distance);
+					run();
 
-				Serial.print("AA");
+					Serial.print("AA");
+				}
 			}
 		} else {
 			if(!firstRun) Serial.write('N');
@@ -153,14 +153,14 @@ void towardsDesk(int dist) {
 }
 
 void stop() {
-        frontStepper.setMaxSpeed(1);
-        frontStepper.setAcceleration(1);
-        frontStepper.setSpeed(1);
+        frontStepper.setMaxSpeed(0);
+        frontStepper.setAcceleration(0);
+        frontStepper.setSpeed(0);
 
-        rearStepper.setMaxSpeed(1);
-        rearStepper.setAcceleration(1);
-        rearStepper.setSpeed(1);
+        rearStepper.setMaxSpeed(0);
+        rearStepper.setAcceleration(0);
+        rearStepper.setSpeed(0);
 
-        frontStepper.moveTo(1);
-        rearStepper.moveTo(1);
+        frontStepper.moveTo(0);
+        rearStepper.moveTo(0);
 }
