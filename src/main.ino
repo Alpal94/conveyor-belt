@@ -12,6 +12,10 @@
 #define rearMotorPin3  9     // IN3 on the ULN2003 driver 1
 #define rearMotorPin4  10    // IN4 on the ULN2003 driver 1
 
+#define relay12VPinMaster 13
+#define on 0
+#define off 1
+
 // Initialize with pin sequence IN1-IN3-IN2-IN4 for using the AccelStepper with 28BYJ-48
 AccelStepper frontStepper(HALFSTEP, frontMotorPin1, frontMotorPin3, frontMotorPin2, frontMotorPin4);
 AccelStepper rearStepper(HALFSTEP, rearMotorPin1, rearMotorPin3, rearMotorPin2, rearMotorPin4);
@@ -24,16 +28,22 @@ bool _test = false;
 void setup() {
 	Serial.begin(9600);
 	if(_test) test();
+	pinMode(relay12VPinMaster, OUTPUT);
+	digitalWrite(relay12VPinMaster, off);
 }
 
 void loop() {
 	float distance = 5000;
+	stop();
+	run();
+	
 	if(_test) run();
 	else {
 		if (Serial.available()) {
 			char data = Serial.read();
 			Serial.write(data);
 			if(data == 's' && !beltActive && frontStepper.distanceToGo() == 0 && rearStepper.distanceToGo() == 0) {
+				digitalWrite(relay12VPinMaster, on);
 				beltActive = true;
 				firstRun = true;
 				towardsCupboard(distance);
@@ -64,6 +74,7 @@ void loop() {
 				//Deactivate belt
 				stop();
 				run();
+				digitalWrite(relay12VPinMaster, off);
 			}
 		}
 		run();
@@ -142,14 +153,14 @@ void towardsDesk(int dist) {
 }
 
 void stop() {
-        frontStepper.setMaxSpeed(0);
-        frontStepper.setAcceleration(0);
-        frontStepper.setSpeed(0);
+        frontStepper.setMaxSpeed(1);
+        frontStepper.setAcceleration(1);
+        frontStepper.setSpeed(1);
 
-        rearStepper.setMaxSpeed(0);
-        rearStepper.setAcceleration(0);
-        rearStepper.setSpeed(0);
+        rearStepper.setMaxSpeed(1);
+        rearStepper.setAcceleration(1);
+        rearStepper.setSpeed(1);
 
-        frontStepper.moveTo(0);
-        rearStepper.moveTo(0);
+        frontStepper.moveTo(1);
+        rearStepper.moveTo(1);
 }
